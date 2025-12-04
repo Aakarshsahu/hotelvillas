@@ -2,6 +2,8 @@ const User = require("../models/User.js");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const transporter = require("../utils/mailer");
+const { Resend } = require("resend");
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 // FORGOT PASSWORD - SEND OTP
 exports.forgotPassword = async (req, res) => {
@@ -20,6 +22,7 @@ exports.forgotPassword = async (req, res) => {
     user.otpHash = otp; // you can bcrypt this also
     user.otpExpiry = Date.now() + 5 * 60 * 1000; // 5 min expiry
     await user.save();
+
 
     // Send email
     await transporter.sendMail({

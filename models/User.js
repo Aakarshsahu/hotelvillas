@@ -20,12 +20,17 @@ const userSchema = new mongoose.Schema({
 
   age: {
     type: Number,
-    required: true,
+    required: function () {
+      return this.role === "user";  // required for user
+    },
   },
 
   qualification: {
     type: String,
-    required: true,
+    required: function () {
+      return this.role === "user";  // required for user
+    },
+
   },
 
   password: {
